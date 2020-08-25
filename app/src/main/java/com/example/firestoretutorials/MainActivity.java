@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -29,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DocumentReference jouranlRef = db.collection("Journal")
+            .document("First Thoughts");
+     // private DocumentReference jouranlRef = db.document("Journal/First Thoughts");
 
 
     @Override
@@ -48,9 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 data.put(KEY_TITLE,title);
                 data.put(KEY_THOUGHTS,thought);
 
-                db.collection("Journal")
-                        .document("First Thoughts")
-                        .set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                jouranlRef.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText( MainActivity.this,"Sucess Saving Data",Toast.LENGTH_SHORT).show();

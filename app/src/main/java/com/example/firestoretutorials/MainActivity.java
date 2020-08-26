@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MyDebug";
     private EditText enterTitle,enterThought;
     private TextView titleTextView,thoughtTextView;
-    Button saveBtn,showBtn;
+    Button saveBtn,showBtn,updateBtn;
 
     public static final String KEY_TITLE = "title";
     public static final String KEY_THOUGHTS = "thought";
@@ -51,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
         thoughtTextView = findViewById(R.id.thoughtTextView);
         showBtn = findViewById(R.id.showBtn);
         saveBtn = findViewById(R.id.saveBtn);
+        updateBtn = findViewById(R.id.updateBtn);
+        updateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateTitle();
+            }
+        });
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +122,23 @@ public class MainActivity extends AppCompatActivity {
                     titleTextView.setText(title);
                     thoughtTextView.setText(thought);
                 }
+            }
+        });
+
+    }
+    private void updateTitle() {
+        String title = enterTitle.getText().toString().trim();
+        Map<String,Object> data = new HashMap<>();
+        data.put(KEY_TITLE,title);
+        jouranlRef.update(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText( MainActivity.this,"Title updated",Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText( MainActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
             }
         });
     }

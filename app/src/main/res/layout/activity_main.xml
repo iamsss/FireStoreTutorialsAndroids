@@ -42,6 +42,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Delete Thought" />
+    <Button
+        android:id="@+id/deleteAllBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete All" />
 
     <TextView
         android:id="@+id/titleTextView"

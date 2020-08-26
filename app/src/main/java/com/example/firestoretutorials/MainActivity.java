@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MyDebug";
     private EditText enterTitle,enterThought;
     private TextView titleTextView,thoughtTextView;
-    Button saveBtn,showBtn,updateBtn,deleteThoughtBtn;
+    Button saveBtn,showBtn,updateBtn,deleteThoughtBtn,deleteAllBtn;
 
     public static final String KEY_TITLE = "title";
     public static final String KEY_THOUGHTS = "thought";
@@ -53,7 +53,14 @@ public class MainActivity extends AppCompatActivity {
         saveBtn = findViewById(R.id.saveBtn);
         updateBtn = findViewById(R.id.updateBtn);
         deleteThoughtBtn = findViewById(R.id.deleteThoughtBtn);
+        deleteAllBtn = findViewById(R.id.deleteAllBtn);
 
+        deleteAllBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteAll();
+            }
+        });
         deleteThoughtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,6 +122,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void deleteAll() {
+        jouranlRef.delete();
+    }
+
     private void deleteThought() {
 //        Map<String,Object> data = new HashMap<>();
 //        data.put(KEY_THOUGHTS, FieldValue.delete());
@@ -137,6 +148,9 @@ public class MainActivity extends AppCompatActivity {
                     String thought = documentSnapshot.getString(KEY_THOUGHTS);
                     titleTextView.setText(title);
                     thoughtTextView.setText(thought);
+                }else{
+                    titleTextView.setText("");
+                    thoughtTextView.setText("");
                 }
             }
         });

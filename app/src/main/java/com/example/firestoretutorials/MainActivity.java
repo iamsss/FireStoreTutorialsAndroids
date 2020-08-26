@@ -8,12 +8,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -22,9 +24,9 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MyDebug";
-    private EditText enterTitle;
-    private EditText enterThought;
-    Button saveBtn;
+    private EditText enterTitle,enterThought;
+    private TextView titleTextView,thoughtTextView;
+    Button saveBtn,showBtn;
 
     public static final String KEY_TITLE = "title";
     public static final String KEY_THOUGHTS = "thought";
@@ -42,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         enterTitle = findViewById(R.id.editText);
         enterThought = findViewById(R.id.editThought);
+        titleTextView = findViewById(R.id.titleTextView);
+        thoughtTextView = findViewById(R.id.thoughtTextView);
+        showBtn = findViewById(R.id.showBtn);
         saveBtn = findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +62,30 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText( MainActivity.this,"Sucess Saving Data",Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG,"onFailure - "+ e.toString());
+                    }
+                });
+            }
+        });
+
+        showBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jouranlRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()){
+                            String title = documentSnapshot.getString(KEY_TITLE);
+                            String thought = documentSnapshot.getString(KEY_THOUGHTS);
+                            titleTextView.setText(title);
+                            thoughtTextView.setText(thought);
+                        }else{
+                            Toast.makeText( MainActivity.this,"No Data Found",Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

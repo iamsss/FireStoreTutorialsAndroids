@@ -26,5 +26,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></Button>
 
+    <Button
+        android:id="@+id/showBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp" />
+
+    <TextView
+        android:id="@+id/thoughtTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp" />
+
 
 </LinearLayout>

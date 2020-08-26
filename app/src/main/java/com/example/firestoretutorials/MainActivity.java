@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MyDebug";
     private EditText enterTitle,enterThought;
     private TextView titleTextView,thoughtTextView;
-    Button saveBtn,showBtn,updateBtn;
+    Button saveBtn,showBtn,updateBtn,deleteThoughtBtn;
 
     public static final String KEY_TITLE = "title";
     public static final String KEY_THOUGHTS = "thought";
@@ -51,6 +52,14 @@ public class MainActivity extends AppCompatActivity {
         showBtn = findViewById(R.id.showBtn);
         saveBtn = findViewById(R.id.saveBtn);
         updateBtn = findViewById(R.id.updateBtn);
+        deleteThoughtBtn = findViewById(R.id.deleteThoughtBtn);
+
+        deleteThoughtBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteThought();
+            }
+        });
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +113,13 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void deleteThought() {
+//        Map<String,Object> data = new HashMap<>();
+//        data.put(KEY_THOUGHTS, FieldValue.delete());
+//        jouranlRef.update(data);
+        jouranlRef.update(KEY_THOUGHTS,FieldValue.delete());
     }
 
     @Override

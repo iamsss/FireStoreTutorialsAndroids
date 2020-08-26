@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private DocumentReference jouranlRef = db.collection("Journal")
             .document("First Thoughts");
      // private DocumentReference jouranlRef = db.document("Journal/First Thoughts");
+
+    private CollectionReference collectionReference = db.collection("Journal");
 
 
     @Override
@@ -76,25 +79,26 @@ public class MainActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = enterTitle.getText().toString().trim();
-                String thought = enterThought.getText().toString().trim();
-
-//                Map<String,Object> data = new HashMap<>();
-//                data.put(KEY_TITLE,title);
-//                data.put(KEY_THOUGHTS,thought);
-
-                Journal journal = new Journal(title,thought);
-                jouranlRef.set(journal).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText( MainActivity.this,"Sucess Saving Data",Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG,"onFailure - "+ e.toString());
-                    }
-                });
+//                String title = enterTitle.getText().toString().trim();
+//                String thought = enterThought.getText().toString().trim();
+//
+////                Map<String,Object> data = new HashMap<>();
+////                data.put(KEY_TITLE,title);
+////                data.put(KEY_THOUGHTS,thought);
+//
+//                Journal journal = new Journal(title,thought);
+//                jouranlRef.set(journal).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        Toast.makeText( MainActivity.this,"Sucess Saving Data",Toast.LENGTH_SHORT).show();
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.d(TAG,"onFailure - "+ e.toString());
+//                    }
+//                });
+                addMutiDocument();
             }
         });
 
@@ -126,6 +130,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void deleteAll() {
         jouranlRef.delete();
+    }
+
+    private void addMutiDocument(){
+        String title = enterTitle.getText().toString().trim();
+        String thought = enterThought.getText().toString().trim();
+        Journal journal = new Journal(title,thought);
+        collectionReference.add(journal);
     }
 
     private void deleteThought() {

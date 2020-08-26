@@ -79,11 +79,12 @@ public class MainActivity extends AppCompatActivity {
                 String title = enterTitle.getText().toString().trim();
                 String thought = enterThought.getText().toString().trim();
 
-                Map<String,Object> data = new HashMap<>();
-                data.put(KEY_TITLE,title);
-                data.put(KEY_THOUGHTS,thought);
+//                Map<String,Object> data = new HashMap<>();
+//                data.put(KEY_TITLE,title);
+//                data.put(KEY_THOUGHTS,thought);
 
-                jouranlRef.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                Journal journal = new Journal(title,thought);
+                jouranlRef.set(journal).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText( MainActivity.this,"Sucess Saving Data",Toast.LENGTH_SHORT).show();
@@ -104,10 +105,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot.exists()){
-                            String title = documentSnapshot.getString(KEY_TITLE);
-                            String thought = documentSnapshot.getString(KEY_THOUGHTS);
-                            titleTextView.setText(title);
-                            thoughtTextView.setText(thought);
+//                            String title = documentSnapshot.getString(KEY_TITLE);
+//                            String thought = documentSnapshot.getString(KEY_THOUGHTS);
+                            Journal journal = documentSnapshot.toObject(Journal.class);
+                            titleTextView.setText(journal.getTitle());
+                            thoughtTextView.setText(journal.getThought());
                         }else{
                             Toast.makeText( MainActivity.this,"No Data Found",Toast.LENGTH_SHORT).show();
                         }
@@ -144,10 +146,9 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 if(documentSnapshot != null && documentSnapshot.exists()){
-                    String title = documentSnapshot.getString(KEY_TITLE);
-                    String thought = documentSnapshot.getString(KEY_THOUGHTS);
-                    titleTextView.setText(title);
-                    thoughtTextView.setText(thought);
+                    Journal journal = documentSnapshot.toObject(Journal.class);
+                    titleTextView.setText(journal.getTitle());
+                    thoughtTextView.setText(journal.getThought());
                 }else{
                     titleTextView.setText("");
                     thoughtTextView.setText("");
